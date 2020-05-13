@@ -1,0 +1,15 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_dnscrypt_proxy_md"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" x:Class="WPF_dnscrypt_proxy_md.MainWindow"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="1000" Width="800">
+    <Grid>
+        <xctk:PropertyGrid HorizontalAlignment="Left" Margin="424,30,0,0" VerticalAlignment="Top" Height="331" Width="344" SelectedObject="{Binding Source={x:Static local:App.GuiShow}}"  />
+        <xctk:Calculator HorizontalAlignment="Left" Margin="23,30,0,0" VerticalAlignment="Top" Value="25519"/>
+        <DataGrid Margin="0,400,0,0" ItemsSource="{Binding Source={x:Static local:App.GridShow}}" RowDetailsVisibilityMode="VisibleWhenSelected" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" VerticalContentAlignment="Center" SelectionUnit="CellOrRowHeader" CanUserAddRows="False" CanUserDeleteRows="False" EnableRowVirtualization="False" />
+    </Grid>
+</Window>
