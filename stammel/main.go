@@ -14,9 +14,10 @@ import (
 import "C"
 
 
-//var _= stammel.EXP_CreateSign
-//var _= stammel.EXP_CheckSignature
+var _= stammel.EXP_CreateSign
+var _= stammel.EXP_CheckSignature
 var _= stammel.EXP_ReadStamp
+var _= stammel.EXP_WriteStamp
 func main() {
 }
 
