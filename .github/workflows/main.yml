@@ -43,3 +43,14 @@ jobs:
           automatic_release_tag	: latest 
           prerelease: false
           files: ./stammel/bin/stammel_go.dll
+  
+    - name: push
+      uses: github-actions-x/commit@v2.6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        push-branch: 'master'
+        commit-message: 'publish'
+        force-add: 'true'
+        files: ./stammel/bin/stammel_go.dll
+        name: AZ-X
+
