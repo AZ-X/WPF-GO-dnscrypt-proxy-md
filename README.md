@@ -10,7 +10,9 @@
 ![Show](https://github.com/AZ-X/MEDIA/blob/master/PNG/minisig.PNG?raw=true)
 
 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-⚛️
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+## ⚛️
+
 ![Show](https://github.com/AZ-X/MEDIA/blob/master/PNG/0706_1.png?raw=true)
-🗼
+
+## 🗼
