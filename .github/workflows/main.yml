@@ -43,14 +43,17 @@ jobs:
           automatic_release_tag	: latest 
           prerelease: false
           files: ./stammel/bin/stammel_go.dll
-  
+     
+    - name: copy stammel library to the root of git
+      run: cp ./stammel/bin/stammel_go.dll .
+      
     - name: push
       uses: github-actions-x/commit@v2.6
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         push-branch: 'master'
-        commit-message: 'publish'
+        commit-message: 'safely published by git actions, feel free to reuse it'
         force-add: 'true'
-        files: ./stammel/bin/stammel_go.dll
+        files: stammel_go.dll
         name: AZ-X
 
