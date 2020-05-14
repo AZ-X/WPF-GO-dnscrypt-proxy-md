@@ -28,14 +28,9 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
     
-    - name: ls
-      run: ls
-      
-    - name: enter stammel directory
-      run: cd stammel
-
     - name: Build
       run: make GOARCH=amd64 GOOS=windows CC=x86_64-w64-mingw32-gcc-8 CGO_ENABLED=1
+      working-directory: ./stammel
       
     - uses: actions/upload-artifact@v2
       with:
