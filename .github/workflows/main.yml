@@ -27,8 +27,11 @@ jobs:
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
+    
+    - name: ls
+      run: ls
       
-    - name: Check out code into the Go module directory
+    - name: enter stammel directory
       run: cd stammel
 
     - name: Build
