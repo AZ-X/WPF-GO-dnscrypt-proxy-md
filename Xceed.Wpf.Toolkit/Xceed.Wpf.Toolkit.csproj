@@ -1,0 +1,120 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyVersion>3.8.0.0</AssemblyVersion>
+    <FileVersion>3.8.0.0</FileVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Resource Include="MessageBox\Icons\Error48.png" />
+    <Resource Include="MessageBox\Icons\Information48.png" />
+    <Resource Include="MessageBox\Icons\Question48.png" />
+    <Resource Include="MessageBox\Icons\Warning48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="RichTextBoxFormatBar\Images\Bold16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="RichTextBoxFormatBar\Images\CenterAlign16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="RichTextBoxFormatBar\Images\Italic16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="RichTextBoxFormatBar\Images\JustifyAlign16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="RichTextBoxFormatBar\Images\LeftAlign16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="RichTextBoxFormatBar\Images\RightAlign16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="RichTextBoxFormatBar\Images\Underline16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="RichTextBoxFormatBar\Images\FontColorPicker16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="RichTextBoxFormatBar\Images\TextHighlightColorPicker16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="RichTextBoxFormatBar\Images\Bullets16.png" />
+    <Resource Include="RichTextBoxFormatBar\Images\Numbering16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="PropertyGrid\Images\SortAscending16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="PropertyGrid\Images\Categorize16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="PropertyGrid\Images\AdvancedProperties11.png" />
+    <Resource Include="PropertyGrid\Images\Inheritance11.png" />
+    <Resource Include="PropertyGrid\Images\Resource11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="PropertyGrid\Images\Database11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="PropertyGrid\Images\Local11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="PropertyGrid\Images\Style11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="PropertyGrid\Images\ClearFilter16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="MultiLineTextEditor\Images\Notes16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Zoombox\Resources\Zoom.cur" />
+    <Resource Include="Zoombox\Resources\ZoomRelative.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="CollectionControl\Images\Delete16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Generic\Images\close_hover.png" />
+    <Resource Include="Themes\Generic\Images\close_inactive.png" />
+    <Resource Include="Themes\Generic\Images\close_normal.png" />
+    <Resource Include="Themes\Generic\Images\close_pressed.png" />
+    <Resource Include="Themes\Generic\Images\close_rounded_hover.png" />
+    <Resource Include="Themes\Generic\Images\close_rounded_inactive.png" />
+    <Resource Include="Themes\Generic\Images\close_rounded_normal.png" />
+    <Resource Include="Themes\Generic\Images\close_rounded_pressed.png" />
+    <Resource Include="Themes\Generic\Images\close_toolwindow_hover.png" />
+    <Resource Include="Themes\Generic\Images\close_toolwindow_inactive.png" />
+    <Resource Include="Themes\Generic\Images\close_toolwindow_normal.png" />
+    <Resource Include="Themes\Generic\Images\close_toolwindow_pressed.png" />
+    <Resource Include="Themes\Generic\Images\maximize_disabled.png" />
+    <Resource Include="Themes\Generic\Images\maximize_hover.png" />
+    <Resource Include="Themes\Generic\Images\maximize_inactive.png" />
+    <Resource Include="Themes\Generic\Images\maximize_normal.png" />
+    <Resource Include="Themes\Generic\Images\maximize_pressed.png" />
+    <Resource Include="Themes\Generic\Images\minimize_hover.png" />
+    <Resource Include="Themes\Generic\Images\minimize_inactive.png" />
+    <Resource Include="Themes\Generic\Images\minimize_normal.png" />
+    <Resource Include="Themes\Generic\Images\minimize_pressed.png" />
+    <Resource Include="Themes\Generic\Images\resize_grip.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Generic\Images\restore_disabled.png" />
+    <Resource Include="Themes\Generic\Images\restore_hover.png" />
+    <Resource Include="Themes\Generic\Images\restore_inactive.png" />
+    <Resource Include="Themes\Generic\Images\restore_normal.png" />
+    <Resource Include="Themes\Generic\Images\restore_pressed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="CollectionControl\Images\Duplicate.png" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -14,18 +14,25 @@
 
   <ItemGroup>
     <Compile Remove="Microsoft.DocAsCode.MarkdownLite\**" />
+    <Compile Remove="Xceed.Wpf.Toolkit\**" />
     <EmbeddedResource Remove="Microsoft.DocAsCode.MarkdownLite\**" />
+    <EmbeddedResource Remove="Xceed.Wpf.Toolkit\**" />
     <None Remove="Microsoft.DocAsCode.MarkdownLite\**" />
+    <None Remove="Xceed.Wpf.Toolkit\**" />
     <Page Remove="Microsoft.DocAsCode.MarkdownLite\**" />
+    <Page Remove="Xceed.Wpf.Toolkit\**" />
   </ItemGroup>
 
+
   <ItemGroup>
-    <PackageReference Include="Extended.Wpf.Toolkit" Version="3.8.1" />
+    <PackageReference Include="DataGridExtensions" Version="2.3.0" />
+    <PackageReference Include="gong-wpf-dragdrop" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="Microsoft.DocAsCode.MarkdownLite\Microsoft.DocAsCode.MarkdownLite.csproj" />
+    <ProjectReference Include="Xceed.Wpf.Toolkit\Xceed.Wpf.Toolkit.csproj" />
   </ItemGroup>
 
   <ItemGroup>
