@@ -23,6 +23,11 @@
   <!-- =============================================================================== -->
 
   <Style TargetType="{x:Type primitives:SelectorItem}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Column.IsReadOnly, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridCell}}" Value="True">
+                <Setter Property="IsHitTestVisible" Value="False" />
+            </DataTrigger>
+        </Style.Triggers>
 
     <Setter Property="HorizontalContentAlignment"
             Value="{Binding Path=HorizontalContentAlignment,RelativeSource={RelativeSource AncestorType={x:Type primitives:Selector}}}" />
@@ -32,7 +37,6 @@
             Value="4,0,0,0" />
     <Setter Property="IsTabStop"
             Value="False" />
-
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type primitives:SelectorItem}">

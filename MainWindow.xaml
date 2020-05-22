@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_dnscrypt_proxy_md"
+        xmlns:dgx="clr-namespace:DataGridExtensions;assembly=DataGridExtensions"
         xmlns:sys="clr-namespace:System;assembly=System.Runtime"
-
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         x:Class="WPF_dnscrypt_proxy_md.MainWindow"
         mc:Ignorable="d"
@@ -16,8 +16,20 @@
 
         ]]>
     </x:Code>
+    <Window.Resources>
+        <ControlTemplate x:Key="FilterWithPopup">
+            <local:PopupEnumFilter Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
+        </ControlTemplate>
+        <Style TargetType="StackPanel" x:Key="ShowStackPanel">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding STAMP}" Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid>
-        <DataGrid x:Name="MyGrid" RowDetailsVisibilityMode="Visible"  AutoGenerateColumns="False" RowHeight="25" Margin="0,0,400,0" ItemsSource="{Binding Source={x:Static local:App.GridShow}}">
+        <DataGrid x:Name="MyGrid" RowDetailsVisibilityMode="Visible" dgx:DataGridFilter.IsAutoFilterEnabled="True"  AutoGenerateColumns="False" RowHeight="25" Margin="0,0,370,0" ItemsSource="{Binding Source={x:Static local:App.GridShow}}">
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>
                     <Border BorderThickness="0" Padding="10">
@@ -26,7 +38,7 @@
                                 <TextBlock FontSize="8" Text="Description:" VerticalAlignment="Center" />
                                 <TextBlock FontSize="12" Background="Red" Foreground="MintCream" Text="{Binding Description}" VerticalAlignment="Center" MaxWidth="500" TextTrimming="CharacterEllipsis" TextWrapping="Wrap"/>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Vertical" Style="{StaticResource ShowStackPanel}">
                                 <TextBlock FontSize="8" Text="RAW STAMP:" VerticalAlignment="Center" />
                                 <TextBlock FontSize="12" Background="BlueViolet" Foreground="MistyRose" Text="{Binding STAMP, Mode=OneWay}" VerticalAlignment="Center" />
                             </StackPanel>
@@ -36,14 +48,15 @@
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Mode=OneWay, Path=Name}" Header="Name"/>
-                <DataGridTextColumn Binding="{Binding Mode=OneWay, Path=Server}" Width="150" Header="IP"/>
-                <DataGridTextColumn Binding="{Binding Path=STAMP.Props}" Header="Flags RAW"/>
-                <DataGridTextColumn Binding="{Binding Path=STAMP.Proto}" Header="Protocol RAW"/>
-                <DataGridTemplateColumn Header="Flags" >
+                <DataGridTextColumn Binding="{Binding Mode=OneWay, Path=Name}" Width="110" Header="Name"/>
+                <DataGridTextColumn Binding="{Binding Mode=OneWay, Path=Description}" MaxWidth="90" Header="DESC"/>
+                <DataGridTextColumn Binding="{Binding Mode=OneWay, Path=STAMP.ServerAddrStr}" Width="115" Header="IP"/>
+                <!--<DataGridTextColumn Binding="{Binding Path=STAMP.Props}" Header="Flags RAW"/>
+                <DataGridTextColumn Binding="{Binding Path=STAMP.Proto}" Header="Protocol RAW"/>-->
+                <DataGridTemplateColumn IsReadOnly="True" Header="Flags" dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}" SortMemberPath="STAMP.Props">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <xctk:CheckComboBox Delimiter=" || "  BorderThickness="0"  DisplayMemberPath="Value" ValueMemberPath="Key"
+                            <xctk:CheckComboBox Delimiter=" | "  BorderThickness="0"  DisplayMemberPath="Value" ValueMemberPath="Key"
                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}"
                                                 ItemsSource="{Binding Source={local:EnumList {x:Type local:ServerFlag}, AsString=True, DBNull=False}}"
                                                 SelectedItemsOverride="{Binding STAMP.Props, Mode=TwoWay, Converter={local:EnumConverter}, ConverterParameter={x:Type local:ServerFlag}}">
@@ -51,7 +64,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Protocol" >
+                <DataGridTemplateColumn IsReadOnly="True" Header="Protocol" dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}" SortMemberPath="STAMP.Proto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <xctk:CheckComboBox DisplayMemberPath="Value" ValueMemberPath="Key"
@@ -62,9 +75,10 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding Mode=OneWay, Path=STAMP.ProviderName}" Width="200" Header="Domain/Identity"/>
             </DataGrid.Columns>
         </DataGrid>
-        <xctk:PropertyGrid HorizontalAlignment="Left" Margin="826,279,0,0" VerticalAlignment="Top" Height="331" Width="344" SelectedObject="{Binding Source={x:Static local:App.GuiShow}}"  />
-        <xctk:Calculator HorizontalAlignment="Left" Margin="996,10,0,0" VerticalAlignment="Top" Value="25519"/>
+        <xctk:PropertyGrid HorizontalAlignment="Left" Margin="850,300,0,10" VerticalAlignment="Top" SelectedObject="{Binding Source={x:Static local:App.GuiShow}}"  />
+        <xctk:Calculator HorizontalAlignment="Left" Margin="1000,10,0,0" VerticalAlignment="Top" Value="25519"/>
     </Grid>
 </Window>

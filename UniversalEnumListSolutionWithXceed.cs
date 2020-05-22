@@ -39,7 +39,7 @@ namespace WPF_dnscrypt_proxy_md
         public object Convert(object value, Type targetType, object parameter,
                               System.Globalization.CultureInfo culture)
         {
-            if (parameter is Type && value.ToString() != string.Empty)
+            if (parameter is Type && null != value && value.ToString() != string.Empty)
             {
                 var enumValue = (Enum)Enum.Parse((Type)parameter, value.ToString());
                 string getDisplayText(string itemString, Type t){
@@ -65,7 +65,7 @@ namespace WPF_dnscrypt_proxy_md
         public object ConvertBack(object value, Type targetType, object parameter,
                                   System.Globalization.CultureInfo culture)
         {
-            Int64? returnValue = 0;
+            Int64? returnValue = null;
             if (null == value)
                 return null;
             if (parameter is Type)
