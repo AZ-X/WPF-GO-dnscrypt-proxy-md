@@ -7,20 +7,17 @@
         xmlns:dgx="clr-namespace:DataGridExtensions;assembly=DataGridExtensions"
         xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        x:Class="WPF_dnscrypt_proxy_md.MainWindow"
+        xmlns:Linq="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json"
+        xmlns:dd="urn:gong-wpf-dragdrop"
+    xmlns:sys1="clr-namespace:System.Collections;assembly=System.Runtime.Extensions"
+    x:Class="WPF_dnscrypt_proxy_md.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1200">
-    <x:Code>
-        <![CDATA[
-
-
-        ]]>
-    </x:Code>
     <Window.Resources>
         <ControlTemplate x:Key="FilterWithPopup">
-            <local:PopupEnumFilter Filter="{Binding Path=Filter, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dgx:DataGridFilterColumnControl}}" />
+            <local:PopupEnumFilter Filter="{Binding Filter, RelativeSource={RelativeSource AncestorType={x:Type dgx:DataGridFilterColumnControl}, Mode=FindAncestor}}" />
         </ControlTemplate>
-        <Style TargetType="StackPanel" x:Key="ShowStackPanel">
+        <Style TargetType="{x:Type StackPanel}" x:Key="ShowStackPanel">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding STAMP}" Value="{x:Null}">
                     <Setter Property="Visibility" Value="Hidden"/>
@@ -28,57 +25,158 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    <Grid>
-        <DataGrid x:Name="MyGrid" RowDetailsVisibilityMode="Visible" dgx:DataGridFilter.IsAutoFilterEnabled="True"  AutoGenerateColumns="False" RowHeight="25" Margin="0,0,370,0" ItemsSource="{Binding Source={x:Static local:App.GridShow}}">
-            <DataGrid.RowDetailsTemplate>
-                <DataTemplate>
-                    <Border BorderThickness="0" Padding="10">
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock FontSize="8" Text="Description:" VerticalAlignment="Center" />
-                                <TextBlock FontSize="12" Background="Red" Foreground="MintCream" Text="{Binding Description}" VerticalAlignment="Center" MaxWidth="500" TextTrimming="CharacterEllipsis" TextWrapping="Wrap"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" Style="{StaticResource ShowStackPanel}">
-                                <TextBlock FontSize="8" Text="RAW STAMP:" VerticalAlignment="Center" />
-                                <TextBlock FontSize="12" Background="BlueViolet" Foreground="MistyRose" Text="{Binding STAMP, Mode=OneWay}" VerticalAlignment="Center" />
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
+    <x:Code>
+        <![CDATA[
 
-                </DataTemplate>
-            </DataGrid.RowDetailsTemplate>
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Mode=OneWay, Path=Name}" Width="110" Header="Name"/>
-                <DataGridTextColumn Binding="{Binding Mode=OneWay, Path=Description}" MaxWidth="90" Header="DESC"/>
-                <DataGridTextColumn Binding="{Binding Mode=OneWay, Path=STAMP.ServerAddrStr}" Width="115" Header="IP"/>
-                <!--<DataGridTextColumn Binding="{Binding Path=STAMP.Props}" Header="Flags RAW"/>
+
+        ]]>
+    </x:Code>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <GroupBox Grid.Column="0" Header="DNSCRYPT PROXY Reference File:" Margin="0,0,0,0" FontWeight="Bold" FontStyle="Italic" FontSize="18" BorderBrush="#FF6BE681">
+            <GroupBox.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFAE55AE" Offset="0.003"/>
+                    <GradientStop Color="#FF5DAE55" Offset="1"/>
+                    <GradientStop Color="#FF5DAE55" Offset="0.278"/>
+                    <GradientStop Color="#FFD658CB" Offset="0.438"/>
+                    <GradientStop Color="#FFA1E09A" Offset="0.266"/>
+                </LinearGradientBrush>
+            </GroupBox.Foreground>
+            <DataGrid dd:DragDrop.IsDragSource="True" Grid.Column="0" x:Name="MyGrid" RowDetailsVisibilityMode="Visible" dgx:DataGridFilter.IsAutoFilterEnabled="True"  AutoGenerateColumns="False"
+                      RowHeight="25" FontSize="12" Margin="0,0,10,0" ItemsSource="{Binding Source={x:Static local:App.GridShow}}" FontWeight="Normal" FontStyle="Normal">
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="0" Padding="10">
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock FontSize="8" Text="Description:" VerticalAlignment="Center" />
+                                    <TextBlock FontSize="12" Background="Red" Foreground="MintCream" Text="{Binding Description}" VerticalAlignment="Center" MaxWidth="500" TextTrimming="CharacterEllipsis" TextWrapping="Wrap"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" Style="{StaticResource ShowStackPanel}">
+                                    <TextBlock FontSize="8" Text="RAW STAMP:" VerticalAlignment="Center" />
+                                    <TextBlock FontSize="12" Background="BlueViolet" Foreground="MistyRose" Text="{Binding STAMP, Mode=OneWay}" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Name, Mode=OneWay}" Width="110" Header="Name"/>
+                    <DataGridTextColumn Binding="{Binding Description, Mode=OneWay}" MaxWidth="90" Header="DESC"/>
+                    <DataGridTextColumn Binding="{Binding STAMP.ServerAddrStr, Mode=OneWay}" Width="115" Header="IP"/>
+                    <!--<DataGridTextColumn Binding="{Binding Path=STAMP.Props}" Header="Flags RAW"/>
                 <DataGridTextColumn Binding="{Binding Path=STAMP.Proto}" Header="Protocol RAW"/>-->
-                <DataGridTemplateColumn IsReadOnly="True" Header="Flags" dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}" SortMemberPath="STAMP.Props">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <xctk:CheckComboBox Delimiter=" | "  BorderThickness="0"  DisplayMemberPath="Value" ValueMemberPath="Key"
-                                                DataContext="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}"
+                    <DataGridTemplateColumn IsReadOnly="True" Header="Flags" dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}" SortMemberPath="STAMP.Props">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <xctk:CheckComboBox Delimiter=" | "  BorderThickness="0"  DisplayMemberPath="Value" ValueMemberPath="Key"
+                                                DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type Grid}, Mode=FindAncestor}}"
                                                 ItemsSource="{Binding Source={local:EnumList {x:Type local:ServerFlag}, AsString=True, DBNull=False}}"
-                                                SelectedItemsOverride="{Binding STAMP.Props, Mode=TwoWay, Converter={local:EnumConverter}, ConverterParameter={x:Type local:ServerFlag}}">
-                            </xctk:CheckComboBox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn IsReadOnly="True" Header="Protocol" dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}" SortMemberPath="STAMP.Proto">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <xctk:CheckComboBox DisplayMemberPath="Value" ValueMemberPath="Key"
-                                                DataContext="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Grid}}"
+                                                SelectedItemsOverride="{Binding STAMP.Props, Converter={local:EnumConverter}, ConverterParameter={x:Type local:ServerFlag}, Mode=TwoWay}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn IsReadOnly="True" Header="Protocol" dgx:DataGridFilterColumn.Template="{StaticResource FilterWithPopup}" SortMemberPath="STAMP.Proto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <xctk:CheckComboBox DisplayMemberPath="Value" ValueMemberPath="Key"
+                                                DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type Grid}, Mode=FindAncestor}}"
                                                 ItemsSource="{Binding Source={local:EnumList {x:Type local:Protocol}, AsString=True, DBNull=False}}"
-                                                SelectedItemsOverride="{Binding STAMP.Proto, Mode=TwoWay, Converter={local:EnumConverter}, ConverterParameter={x:Type local:Protocol}}">
-                            </xctk:CheckComboBox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding Mode=OneWay, Path=STAMP.ProviderName}" Width="200" Header="Domain/Identity"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <xctk:PropertyGrid HorizontalAlignment="Left" Margin="850,300,0,10" VerticalAlignment="Top" SelectedObject="{Binding Source={x:Static local:App.GuiShow}}"  />
-        <xctk:Calculator HorizontalAlignment="Left" Margin="1000,10,0,0" VerticalAlignment="Top" Value="25519"/>
+                                                SelectedItemsOverride="{Binding STAMP.Proto, Converter={local:EnumConverter}, ConverterParameter={x:Type local:Protocol}, Mode=TwoWay}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Binding="{Binding STAMP.ProviderName, Mode=OneWay}" Width="200" Header="Domain/Identity"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+        <GridSplitter Grid.Column ="1" Background="IndianRed" Width="5"
+                HorizontalAlignment="Center" ShowsPreview="True" Margin="0,0,0,0" ResizeDirection="Columns" Padding="30,0,30,0"/>
+        <Grid Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="10*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80*"/>
+                <RowDefinition Height="20*"/>
+            </Grid.RowDefinitions>
+            <ListView dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{local:ListDropTarget}" Grid.Column="0"  Grid.Row="0">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" Width="200"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <xctk:PropertyGrid Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" Margin="0,10,0,0" VerticalAlignment="Top" SelectedObject="{Binding Source={x:Static local:App.GuiShow}}"
+                           ShowTitle="False" IsReadOnly="False" ShowSortOptions="False" ShowAdvancedOptions="True" ShowSummary="True" ShowSearchBox="False" IsVirtualizing="True" IsMiscCategoryLabelHidden="False" IsManipulationEnabled="True" MinHeight="300">
+                <xctk:PropertyGrid.PropertyDefinitions>
+                    <xctk:PropertyDefinition DisplayOrder="1" DisplayName="Domain/Identity" TargetProperties="ProviderName" />
+                    <xctk:PropertyDefinition DisplayOrder="2" DisplayName="Hash set of certifications" TargetProperties="Hashes" />
+                    <xctk:PropertyDefinition DisplayOrder="3" DisplayName="Flags" TargetProperties="Props" />
+                    <xctk:PropertyDefinition DisplayOrder="4" DisplayName="Protocol" TargetProperties="Proto" />
+                </xctk:PropertyGrid.PropertyDefinitions>
+                <xctk:PropertyGrid.PropertyContainerStyle>
+                    <Style>
+                        <Setter Property="ItemsControl.Background" Value="ForestGreen"/>
+                        <Setter Property="ItemsControl.Foreground" Value="Fuchsia"/>
+                    </Style>
+                </xctk:PropertyGrid.PropertyContainerStyle>
+                <xctk:PropertyGrid.EditorDefinitions>
+                    <xctk:EditorTemplateDefinition TargetProperties="ProviderName">
+                        <xctk:EditorTemplateDefinition.EditingTemplate>
+                            <DataTemplate>
+                                <TextBlock Background="ForestGreen" Foreground="Fuchsia" Text="{Binding Value}">
+                                </TextBlock>
+                            </DataTemplate>
+                        </xctk:EditorTemplateDefinition.EditingTemplate>
+                    </xctk:EditorTemplateDefinition>
+                    <xctk:EditorTemplateDefinition TargetProperties="Hashes">
+                        <xctk:EditorTemplateDefinition.EditingTemplate>
+                            <DataTemplate>
+                                <xctk:MultiLineTextEditor DropDownWidth="350" Text="{Binding Value}">
+                                </xctk:MultiLineTextEditor>
+                            </DataTemplate>
+                        </xctk:EditorTemplateDefinition.EditingTemplate>
+                    </xctk:EditorTemplateDefinition>
+                    <xctk:EditorTemplateDefinition TargetProperties="Props">
+                        <xctk:EditorTemplateDefinition.EditingTemplate>
+                            <DataTemplate>
+                                <xctk:CheckComboBox DisplayMemberPath="Value" ValueMemberPath="Key"
+                                                ItemsSource="{Binding Source={local:EnumList {x:Type local:ServerFlag}, AsString=True, DBNull=False}}"
+                                                SelectedItemsOverride="{Binding Value, Converter={local:EnumConverter}, ConverterParameter={x:Type local:ServerFlag}, Mode=TwoWay}"/>
+                            </DataTemplate>
+                        </xctk:EditorTemplateDefinition.EditingTemplate>
+                    </xctk:EditorTemplateDefinition>
+                    <xctk:EditorTemplateDefinition TargetProperties="Proto">
+                        <xctk:EditorTemplateDefinition.EditingTemplate>
+                            <DataTemplate>
+                                <xctk:CheckComboBox DisplayMemberPath="Value" ValueMemberPath="Key"
+                                                ItemsSource="{Binding Source={local:EnumList {x:Type local:Protocol}, AsString=True, DBNull=False}}"
+                                                SelectedItemsOverride="{Binding Value, Converter={local:EnumConverter}, ConverterParameter={x:Type local:Protocol}, Mode=TwoWay}"/>
+                            </DataTemplate>
+                        </xctk:EditorTemplateDefinition.EditingTemplate>
+                    </xctk:EditorTemplateDefinition>
+
+                </xctk:PropertyGrid.EditorDefinitions>
+            </xctk:PropertyGrid>
+            <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Height="80" Margin="10" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <xctk:IconButton Width="100" Margin="10" Background="Aqua">
+                    <TextBlock Text="Open Reference File" TextWrapping="Wrap" TextAlignment="Center"/>
+                </xctk:IconButton>
+                <xctk:IconButton Width="100" Margin="10" Background="Beige">
+                    <TextBlock Text="Verify Signature(Reference File)" TextWrapping="Wrap" TextAlignment="Center"/>
+                </xctk:IconButton>
+                <xctk:IconButton Width="100" Margin="10" Background="CadetBlue">
+                    <TextBlock Text="Save File Recreate Signature" TextWrapping="Wrap" TextAlignment="Center"/>
+                </xctk:IconButton>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>
