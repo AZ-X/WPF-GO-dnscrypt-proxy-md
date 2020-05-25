@@ -30,7 +30,7 @@ namespace WPF_dnscrypt_proxy_md
         DNSCrypt,
         DoH,
         TLS,
-        DNSCryptRelay = 0x83,
+        DNSCryptRelay = 0x81,
     }
 
     public class EnumConverter : MarkupExtension, IValueConverter

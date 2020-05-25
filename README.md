@@ -4,6 +4,10 @@
 ##  
 # What it looks like NOW...
 ![Show](https://github.com/AZ-X/MEDIA/blob/master/PNG/final_layout_main_edit.PNG?raw=true)
+
+
+![Show](https://github.com/AZ-X/MEDIA/blob/master/PNG/final_layout_main_edit.PNG?raw=true)
+lazily rename relays.md to public-resolvers.md, you will also get this...
 # GUI-VERSION 1 - What it looks like ...
 ![Show](https://github.com/AZ-X/MEDIA/blob/master/PNG/column_base_filter.PNG?raw=true)
 

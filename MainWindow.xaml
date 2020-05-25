@@ -144,7 +144,7 @@
                     <ListView.View>
                         <GridView>
                             <GridViewColumn DisplayMemberBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, 
-                                         Converter={local:IndexConverter}}" Header="#" Width="20"/>
+                                         Converter={local:IndexConverter}}" Header="#" Width="25"/>
                             <GridViewColumn Header="Name" Width="200">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
