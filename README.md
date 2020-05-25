@@ -3,7 +3,7 @@
 ## At least, it works.
 ##  
 # What it looks like NOW...
-![Show](https://github.com/AZ-X/MEDIA/blob/master/PNG/final_layout_main.PNG?raw=true)
+![Show](https://github.com/AZ-X/MEDIA/blob/master/PNG/final_layout_main_edit.PNG?raw=true)
 # GUI-VERSION 1 - What it looks like ...
 ![Show](https://github.com/AZ-X/MEDIA/blob/master/PNG/column_base_filter.PNG?raw=true)
 

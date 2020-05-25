@@ -5,11 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_dnscrypt_proxy_md"
         xmlns:dgx="clr-namespace:DataGridExtensions;assembly=DataGridExtensions"
-        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
-        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:Linq="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json"
-        xmlns:dd="urn:gong-wpf-dragdrop"
-    xmlns:sys1="clr-namespace:System.Collections;assembly=System.Runtime.Extensions"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    xmlns:dd="urn:gong-wpf-dragdrop"
     x:Class="WPF_dnscrypt_proxy_md.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1200">
@@ -27,7 +24,19 @@
     </Window.Resources>
     <x:Code>
         <![CDATA[
-
+        private void LV_DEL_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if(null != lv.SelectedItem)
+            {
+                lv.Items.Remove(lv.SelectedItem);
+            }
+        }
+        
+        private void LV_PreviewGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            ListViewItem item = (ListViewItem)sender;
+            item.IsSelected = true;
+        }
 
         ]]>
     </x:Code>
@@ -37,7 +46,13 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
-        <GroupBox Grid.Column="0" Header="DNSCRYPT PROXY Reference File:" Margin="0,0,0,0" FontWeight="Bold" FontStyle="Italic" FontSize="18" BorderBrush="#FF6BE681">
+        <GroupBox Grid.Column="0" Margin="0,0,0,0" BorderBrush="#FF6BE681">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal" Height="25">
+                    <TextBlock Text="DNSCRYPT PROXY Reference File:" FontWeight="Bold" FontStyle="Italic" FontSize="18"/>
+                    <TextBlock x:Name="FileName" Text="" Foreground="LightSkyBlue" Margin="10,0,0,5" VerticalAlignment="Bottom"/>
+                </StackPanel>
+            </GroupBox.Header>
             <GroupBox.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FFAE55AE" Offset="0.003"/>
@@ -48,7 +63,7 @@
                 </LinearGradientBrush>
             </GroupBox.Foreground>
             <DataGrid dd:DragDrop.IsDragSource="True" Grid.Column="0" x:Name="MyGrid" RowDetailsVisibilityMode="Visible" dgx:DataGridFilter.IsAutoFilterEnabled="True"  AutoGenerateColumns="False"
-                      RowHeight="25" FontSize="12" Margin="0,0,10,0" ItemsSource="{Binding Source={x:Static local:App.GridShow}}" FontWeight="Normal" FontStyle="Normal">
+                      RowHeight="25" Margin="0,0,10,0" ItemsSource="{Binding Source={x:Static local:App.GridShow}}">
                 <DataGrid.RowDetailsTemplate>
                     <DataTemplate>
                         <Border BorderThickness="0" Padding="10">
@@ -98,85 +113,123 @@
         </GroupBox>
         <GridSplitter Grid.Column ="1" Background="IndianRed" Width="5"
                 HorizontalAlignment="Center" ShowsPreview="True" Margin="0,0,0,0" ResizeDirection="Columns" Padding="30,0,30,0"/>
-        <Grid Grid.Column="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="8*"/>
-                <ColumnDefinition Width="10*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="80*"/>
-                <RowDefinition Height="20*"/>
-            </Grid.RowDefinitions>
-            <ListView dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{local:ListDropTarget}" Grid.Column="0"  Grid.Row="0">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" Width="200"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-            <xctk:PropertyGrid Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" Margin="0,10,0,0" VerticalAlignment="Top" SelectedObject="{Binding Source={x:Static local:App.GuiShow}}"
+        <GroupBox Grid.Column="2" Margin="0,0,0,0" BorderBrush="#FFAE1818">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal" Height="25">
+                    <TextBlock Text="Your Customized List:" FontWeight="Bold" FontStyle="Italic" FontSize="18"/>
+                </StackPanel>
+            </GroupBox.Header>
+            <GroupBox.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFAE55AE" Offset="0.003"/>
+                    <GradientStop Color="#FF5DAE55" Offset="1"/>
+                    <GradientStop Color="#FF5DAE55" Offset="0.278"/>
+                    <GradientStop Color="Gold" Offset="0.585"/>
+                    <GradientStop Color="#FFDE4F24" Offset="0.464"/>
+                    <GradientStop Color="#FFD19257" Offset="0.765"/>
+                    <GradientStop Color="#FFCE5A2A" Offset="0.421"/>
+                    <GradientStop Color="#FF66A35F" Offset="0.241"/>
+                </LinearGradientBrush>
+            </GroupBox.Foreground>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="10*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80*"/>
+                    <RowDefinition Height="20*"/>
+                </Grid.RowDefinitions>
+                <ListView dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{local:ListDropTarget}" Grid.Column="0"  Grid.Row="0" Name="lv" IsManipulationEnabled="True" SelectionMode="Single">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn DisplayMemberBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, 
+                                         Converter={local:IndexConverter}}" Header="#" Width="20"/>
+                            <GridViewColumn Header="Name" Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Foreground="Fuchsia" Text="{Binding Name, Mode=TwoWay}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                    <ListView.InputBindings>
+                        <KeyBinding Key="Delete" Command="{Binding Path=ApplicationCommands.Delete}"/>
+                    </ListView.InputBindings>
+                    <ListView.CommandBindings>
+                        <CommandBinding Command="ApplicationCommands.Delete" Executed="LV_DEL_Executed"/>
+                    </ListView.CommandBindings>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <EventSetter Event="PreviewGotKeyboardFocus" Handler="LV_PreviewGotKeyboardFocus"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+                <xctk:PropertyGrid Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Margin="0,10,0,0" VerticalAlignment="Top" SelectedObject="{Binding SelectedItem.STAMP, ElementName=lv}"
                            ShowTitle="False" IsReadOnly="False" ShowSortOptions="False" ShowAdvancedOptions="True" ShowSummary="True" ShowSearchBox="False" IsVirtualizing="True" IsMiscCategoryLabelHidden="False" IsManipulationEnabled="True" MinHeight="300">
-                <xctk:PropertyGrid.PropertyDefinitions>
-                    <xctk:PropertyDefinition DisplayOrder="1" DisplayName="Domain/Identity" TargetProperties="ProviderName" />
-                    <xctk:PropertyDefinition DisplayOrder="2" DisplayName="Hash set of certifications" TargetProperties="Hashes" />
-                    <xctk:PropertyDefinition DisplayOrder="3" DisplayName="Flags" TargetProperties="Props" />
-                    <xctk:PropertyDefinition DisplayOrder="4" DisplayName="Protocol" TargetProperties="Proto" />
-                </xctk:PropertyGrid.PropertyDefinitions>
-                <xctk:PropertyGrid.PropertyContainerStyle>
-                    <Style>
-                        <Setter Property="ItemsControl.Background" Value="ForestGreen"/>
-                        <Setter Property="ItemsControl.Foreground" Value="Fuchsia"/>
-                    </Style>
-                </xctk:PropertyGrid.PropertyContainerStyle>
-                <xctk:PropertyGrid.EditorDefinitions>
-                    <xctk:EditorTemplateDefinition TargetProperties="ProviderName">
-                        <xctk:EditorTemplateDefinition.EditingTemplate>
-                            <DataTemplate>
-                                <TextBlock Background="ForestGreen" Foreground="Fuchsia" Text="{Binding Value}">
-                                </TextBlock>
-                            </DataTemplate>
-                        </xctk:EditorTemplateDefinition.EditingTemplate>
-                    </xctk:EditorTemplateDefinition>
-                    <xctk:EditorTemplateDefinition TargetProperties="Hashes">
-                        <xctk:EditorTemplateDefinition.EditingTemplate>
-                            <DataTemplate>
-                                <xctk:MultiLineTextEditor DropDownWidth="350" Text="{Binding Value}">
-                                </xctk:MultiLineTextEditor>
-                            </DataTemplate>
-                        </xctk:EditorTemplateDefinition.EditingTemplate>
-                    </xctk:EditorTemplateDefinition>
-                    <xctk:EditorTemplateDefinition TargetProperties="Props">
-                        <xctk:EditorTemplateDefinition.EditingTemplate>
-                            <DataTemplate>
-                                <xctk:CheckComboBox DisplayMemberPath="Value" ValueMemberPath="Key"
+                    <xctk:PropertyGrid.PropertyDefinitions>
+                        <xctk:PropertyDefinition DisplayOrder="1" DisplayName="Domain/Identity" TargetProperties="ProviderName" />
+                        <xctk:PropertyDefinition DisplayOrder="2" DisplayName="Hash set of certifications" TargetProperties="Hashes" />
+                        <xctk:PropertyDefinition DisplayOrder="3" DisplayName="Flags" TargetProperties="Props" />
+                        <xctk:PropertyDefinition DisplayOrder="4" DisplayName="Protocol" TargetProperties="Proto" />
+                    </xctk:PropertyGrid.PropertyDefinitions>
+                    <xctk:PropertyGrid.PropertyContainerStyle>
+                        <Style>
+                            <Setter Property="ItemsControl.Background" Value="ForestGreen"/>
+                            <Setter Property="ItemsControl.Foreground" Value="Fuchsia"/>
+                        </Style>
+                    </xctk:PropertyGrid.PropertyContainerStyle>
+                    <xctk:PropertyGrid.EditorDefinitions>
+                        <xctk:EditorTemplateDefinition TargetProperties="ProviderName">
+                            <xctk:EditorTemplateDefinition.EditingTemplate>
+                                <DataTemplate>
+                                    <TextBlock Background="ForestGreen" Foreground="Fuchsia" Text="{Binding Value}">
+                                    </TextBlock>
+                                </DataTemplate>
+                            </xctk:EditorTemplateDefinition.EditingTemplate>
+                        </xctk:EditorTemplateDefinition>
+                        <xctk:EditorTemplateDefinition TargetProperties="Hashes">
+                            <xctk:EditorTemplateDefinition.EditingTemplate>
+                                <DataTemplate>
+                                    <xctk:MultiLineTextEditor DropDownWidth="350" Text="{Binding Value}">
+                                    </xctk:MultiLineTextEditor>
+                                </DataTemplate>
+                            </xctk:EditorTemplateDefinition.EditingTemplate>
+                        </xctk:EditorTemplateDefinition>
+                        <xctk:EditorTemplateDefinition TargetProperties="Props">
+                            <xctk:EditorTemplateDefinition.EditingTemplate>
+                                <DataTemplate>
+                                    <xctk:CheckComboBox DisplayMemberPath="Value" ValueMemberPath="Key"
                                                 ItemsSource="{Binding Source={local:EnumList {x:Type local:ServerFlag}, AsString=True, DBNull=False}}"
                                                 SelectedItemsOverride="{Binding Value, Converter={local:EnumConverter}, ConverterParameter={x:Type local:ServerFlag}, Mode=TwoWay}"/>
-                            </DataTemplate>
-                        </xctk:EditorTemplateDefinition.EditingTemplate>
-                    </xctk:EditorTemplateDefinition>
-                    <xctk:EditorTemplateDefinition TargetProperties="Proto">
-                        <xctk:EditorTemplateDefinition.EditingTemplate>
-                            <DataTemplate>
-                                <xctk:CheckComboBox DisplayMemberPath="Value" ValueMemberPath="Key"
+                                </DataTemplate>
+                            </xctk:EditorTemplateDefinition.EditingTemplate>
+                        </xctk:EditorTemplateDefinition>
+                        <xctk:EditorTemplateDefinition TargetProperties="Proto">
+                            <xctk:EditorTemplateDefinition.EditingTemplate>
+                                <DataTemplate>
+                                    <xctk:CheckComboBox DisplayMemberPath="Value" ValueMemberPath="Key"
                                                 ItemsSource="{Binding Source={local:EnumList {x:Type local:Protocol}, AsString=True, DBNull=False}}"
                                                 SelectedItemsOverride="{Binding Value, Converter={local:EnumConverter}, ConverterParameter={x:Type local:Protocol}, Mode=TwoWay}"/>
-                            </DataTemplate>
-                        </xctk:EditorTemplateDefinition.EditingTemplate>
-                    </xctk:EditorTemplateDefinition>
+                                </DataTemplate>
+                            </xctk:EditorTemplateDefinition.EditingTemplate>
+                        </xctk:EditorTemplateDefinition>
 
-                </xctk:PropertyGrid.EditorDefinitions>
-            </xctk:PropertyGrid>
-            <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Height="80" Margin="10" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                <xctk:IconButton Width="100" Margin="10" Background="Aqua">
-                    <TextBlock Text="Open Reference File" TextWrapping="Wrap" TextAlignment="Center"/>
-                </xctk:IconButton>
-                <xctk:IconButton Width="100" Margin="10" Background="Beige">
-                    <TextBlock Text="Verify Signature(Reference File)" TextWrapping="Wrap" TextAlignment="Center"/>
-                </xctk:IconButton>
-                <xctk:IconButton Width="100" Margin="10" Background="CadetBlue">
-                    <TextBlock Text="Save File Recreate Signature" TextWrapping="Wrap" TextAlignment="Center"/>
-                </xctk:IconButton>
-            </StackPanel>
-        </Grid>
+                    </xctk:PropertyGrid.EditorDefinitions>
+                </xctk:PropertyGrid>
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Height="80" Margin="10" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                    <xctk:IconButton Width="100" Margin="10" Background="Aqua">
+                        <TextBlock Text="Open Reference File" TextWrapping="Wrap" TextAlignment="Center"/>
+                    </xctk:IconButton>
+                    <xctk:IconButton Width="100" Margin="10" Background="Beige">
+                        <TextBlock Text="Verify Signature(Reference File)" TextWrapping="Wrap" TextAlignment="Center"/>
+                    </xctk:IconButton>
+                    <xctk:IconButton Width="100" Margin="10" Background="CadetBlue">
+                        <TextBlock Text="Save File &amp;Recreate Signature" TextWrapping="Wrap" TextAlignment="Center"/>
+                    </xctk:IconButton>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>
