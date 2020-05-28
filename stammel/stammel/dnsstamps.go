@@ -106,7 +106,6 @@ func EXP_WriteStamp(jsonStr string) (*C.char) {
 	return C.CString(stampStr)
 }
 
-
 func NewServerStampFromString(stampStr string) (ServerStamp, error) {
 	if !strings.HasPrefix(stampStr, "sdns:") {
 		return ServerStamp{}, errors.New("Stamps are expected to start with sdns:")
@@ -174,7 +173,7 @@ func newDNSCryptServerStamp(bin []byte) (ServerStamp, error) {
 
 	length = int(bin[pos])
 	if 1+length >= binLen-pos {
-		return stamp, errors.New("Invalid stamp")
+		return stamp, errors.New("Invalid stamp 2")
 	}
 	pos++
 	stamp.ServerPk = bin[pos : pos+length]
@@ -182,7 +181,7 @@ func newDNSCryptServerStamp(bin []byte) (ServerStamp, error) {
 
 	length = int(bin[pos])
 	if length >= binLen-pos {
-		return stamp, errors.New("Invalid stamp")
+		return stamp, errors.New("Invalid stamp 3")
 	}
 	pos++
 	stamp.ProviderName = string(bin[pos : pos+length])
@@ -207,7 +206,7 @@ func newDoHServerStamp(bin []byte) (ServerStamp, error) {
 
 	length := int(bin[pos])
 	if 1+length >= binLen-pos {
-		return stamp, errors.New("Invalid stamp")
+		return stamp, errors.New("Invalid stamp 1")
 	}
 	pos++
 	stamp.ServerAddrStr = string(bin[pos : pos+length])
@@ -217,7 +216,7 @@ func newDoHServerStamp(bin []byte) (ServerStamp, error) {
 		vlen := int(bin[pos])
 		length = vlen & ^0x80
 		if 1+length >= binLen-pos {
-			return stamp, errors.New("Invalid stamp")
+			return stamp, errors.New("Invalid stamp 2")
 		}
 		pos++
 		if length > 0 {
@@ -231,7 +230,7 @@ func newDoHServerStamp(bin []byte) (ServerStamp, error) {
 
 	length = int(bin[pos])
 	if 1+length >= binLen-pos {
-		return stamp, errors.New("Invalid stamp")
+		return stamp, errors.New("Invalid stamp 3")
 	}
 	pos++
 	stamp.ProviderName = string(bin[pos : pos+length])
@@ -239,7 +238,7 @@ func newDoHServerStamp(bin []byte) (ServerStamp, error) {
 
 	length = int(bin[pos])
 	if length >= binLen-pos {
-		return stamp, errors.New("Invalid stamp")
+		return stamp, errors.New("Invalid stamp 4")
 	}
 	pos++
 	stamp.Path = string(bin[pos : pos+length])
@@ -319,11 +318,12 @@ func newDNSCryptRelayStamp(bin []byte) (ServerStamp, error) {
 }
 
 func (stamp *ServerStamp) String() string {
-	if stamp.Proto == StampProtoTypeDNSCrypt {
+	switch stamp.Proto {
+	case StampProtoTypeDNSCrypt:
 		return stamp.dnsCryptString()
-	} else if stamp.Proto == StampProtoTypeDoH {
+	case StampProtoTypeDoH:
 		return stamp.dohString()
-	} else if stamp.Proto == StampProtoTypeDNSCryptRelay {
+	case StampProtoTypeDNSCryptRelay:
 		return stamp.dnsCryptRelayString()
 	}
 	panic("Unsupported protocol")
@@ -347,10 +347,12 @@ func (stamp *ServerStamp) dnsCryptString() string {
 	bin = append(bin, uint8(len(stamp.ProviderName)))
 	bin = append(bin, []uint8(stamp.ProviderName)...)
 
-	str := base64.RawURLEncoding.EncodeToString(bin)
+	str := base64.RawURLEncoding.Strict().EncodeToString(bin)
 
 	return "sdns://" + str
 }
+
+
 
 func (stamp *ServerStamp) dohString() string {
 	bin := make([]uint8, 9)
@@ -364,23 +366,26 @@ func (stamp *ServerStamp) dohString() string {
 	bin = append(bin, uint8(len(serverAddrStr)))
 	bin = append(bin, []uint8(serverAddrStr)...)
 
-	last := len(stamp.Hashes) - 1
-	for i, hash := range stamp.Hashes {
-		vlen := len(hash)
-		if i < last {
-			vlen |= 0x80
+	if len(stamp.Hashes) == 0 {
+		bin = append(bin, uint8(0))
+	} else {
+		last := len(stamp.Hashes) - 1
+		for i, hash := range stamp.Hashes {
+			vlen := len(hash)
+			if i < last {
+				vlen |= 0x80
+			}
+			bin = append(bin, uint8(vlen))
+			bin = append(bin, hash...)
 		}
-		bin = append(bin, uint8(vlen))
-		bin = append(bin, hash...)
 	}
-
 	bin = append(bin, uint8(len(stamp.ProviderName)))
 	bin = append(bin, []uint8(stamp.ProviderName)...)
 
 	bin = append(bin, uint8(len(stamp.Path)))
 	bin = append(bin, []uint8(stamp.Path)...)
 
-	str := base64.RawURLEncoding.EncodeToString(bin)
+	str := base64.RawURLEncoding.Strict().EncodeToString(bin)
 
 	return "sdns://" + str
 }
@@ -396,7 +401,7 @@ func (stamp *ServerStamp) dnsCryptRelayString() string {
 	bin = append(bin, uint8(len(serverAddrStr)))
 	bin = append(bin, []uint8(serverAddrStr)...)
 
-	str := base64.RawURLEncoding.EncodeToString(bin)
+	str := base64.RawURLEncoding.Strict().EncodeToString(bin)
 
 	return "sdns://" + str
 }

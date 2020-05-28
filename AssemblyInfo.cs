@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Windows;
 
 [assembly: ThemeInfo(
@@ -8,3 +9,6 @@ using System.Windows;
                                               //(used if a resource is not found in the page,
                                               // app, or any theme specific resource dictionaries)
 )]
+
+[assembly: AssemblyCopyright("https://github.com/AZ-X/ © 2020")]
+[assembly: AssemblyFlags(AssemblyNameFlags.None)]

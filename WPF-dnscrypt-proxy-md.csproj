@@ -4,8 +4,18 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>WPF_dnscrypt_proxy_md</RootNamespace>
+    <PublishSingleFile>true</PublishSingleFile>
+    <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
+    <PublishTrimmed>true</PublishTrimmed>
+    <PublishReadyToRun>true</PublishReadyToRun>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x64</Platforms>
+    <AssemblyTitle>A gadget for producing refined md files of dnscrypt-proxy resolver variants and relays</AssemblyTitle>
+    <Authors>AZ-X</Authors>
+    <DefaultLanguage>en-CA</DefaultLanguage>
+    <PackageLicenseExpression>https://github.com/AZ-X/WPF-GO-dnscrypt-proxy-md/LICENSE</PackageLicenseExpression>
+    <PackageProjectUrl></PackageProjectUrl>
+    <ApplicationIcon>0706.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -22,8 +32,7 @@
     <Page Remove="Microsoft.DocAsCode.MarkdownLite\**" />
     <Page Remove="Xceed.Wpf.Toolkit\**" />
   </ItemGroup>
-
-
+  
   <ItemGroup>
     <PackageReference Include="DataGridExtensions" Version="2.3.0" />
     <PackageReference Include="gong-wpf-dragdrop" Version="2.2.0" />
@@ -33,6 +42,12 @@
   <ItemGroup>
     <ProjectReference Include="Microsoft.DocAsCode.MarkdownLite\Microsoft.DocAsCode.MarkdownLite.csproj" />
     <ProjectReference Include="Xceed.Wpf.Toolkit\Xceed.Wpf.Toolkit.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\image1.ico" />
+    <Resource Include="Resources\Images\image2.ico" />
+    <Resource Include="Resources\Images\image3.ico" />
   </ItemGroup>
 
   <ItemGroup>

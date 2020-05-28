@@ -9,8 +9,11 @@
     xmlns:dd="urn:gong-wpf-dragdrop"
     x:Class="WPF_dnscrypt_proxy_md.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1200">
+        Title="MainWindow" WindowStartupLocation="CenterScreen" Height="800" Width="1200">
     <Window.Resources>
+        <Image x:Key="imgBtn1"  Source="Resources/Images/image1.ico" Width="30"/>
+        <Image x:Key="imgBtn2"  Source="Resources/Images/image2.ico" Width="30"/>
+        <Image x:Key="imgBtn3"  Source="Resources/Images/image3.ico" Width="30"/>
         <ControlTemplate x:Key="FilterWithPopup">
             <local:PopupEnumFilter Filter="{Binding Filter, RelativeSource={RelativeSource AncestorType={x:Type dgx:DataGridFilterColumnControl}, Mode=FindAncestor}}" />
         </ControlTemplate>
@@ -21,23 +24,55 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <ControlTemplate x:Key="validationTemplate">
+            <DockPanel>
+                <AdornedElementPlaceholder Name="gucci"/>
+                <TextBlock Foreground="Red" FontSize="18" FontStretch="UltraExpanded" Margin="10,0,0,0">
+                    <Run>&#x1F440;</Run>
+                    <Run FontSize="8" FontStyle="Italic">
+                        <Binding Path="AdornedElement.(Validation.Errors)/ErrorContent"  ElementName="gucci"/>
+                    </Run>
+                </TextBlock>
+            </DockPanel>
+        </ControlTemplate>
     </Window.Resources>
     <x:Code>
         <![CDATA[
-        private void LV_DEL_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if(null != lv.SelectedItem)
-            {
-                lv.Items.Remove(lv.SelectedItem);
-            }
-        }
-        
         private void LV_PreviewGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             ListViewItem item = (ListViewItem)sender;
             item.IsSelected = true;
         }
 
+        private void LV_DEL_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (null != lv.SelectedItem)
+            {
+                lv.Items.Remove(lv.SelectedItem);
+                var gvrps = FindVisualChild<GridViewRowPresenter>(lv);
+                foreach(var gvrp in gvrps)
+                {
+                    var cell = VisualTreeHelper.GetChild(gvrp, 0) as TextBlock;
+                    var be = cell.GetBindingExpression(TextBlock.TextProperty);
+                    be.UpdateTarget();
+                }
+            }
+        }
+
+        private void ValidateListViewItems(object sender, RoutedEventArgs e)
+        {
+            var gvtbs = FindVisualChild<TextBox>(lv);
+            foreach (var gvtb in gvtbs)
+            {
+                var cell = gvtb as TextBox;
+                var be = cell.GetBindingExpression(TextBox.TextProperty);
+                var r = be.ParentBinding.ValidationRules[0].Validate(be, null);
+                if (!r.IsValid)
+                    Validation.MarkInvalid(be, new ValidationError(be.ParentBinding.ValidationRules[0], be, r.ErrorContent, null));
+                else
+                    Validation.ClearInvalid(be);
+            }
+        }
         ]]>
     </x:Code>
     <Grid>
@@ -78,11 +113,11 @@
                                 </StackPanel>
                             </StackPanel>
                         </Border>
-
                     </DataTemplate>
                 </DataGrid.RowDetailsTemplate>
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Name, Mode=OneWay}" Width="110" Header="Name"/>
+                    <!--<DataGridTextColumn Binding="{Binding T, Mode=OneWay}" Width="50" Header="T"/>-->
                     <DataGridTextColumn Binding="{Binding Description, Mode=OneWay}" MaxWidth="90" Header="DESC"/>
                     <DataGridTextColumn Binding="{Binding STAMP.ServerAddrStr, Mode=OneWay}" Width="115" Header="IP"/>
                     <!--<DataGridTextColumn Binding="{Binding Path=STAMP.Props}" Header="Flags RAW"/>
@@ -140,15 +175,24 @@
                     <RowDefinition Height="80*"/>
                     <RowDefinition Height="20*"/>
                 </Grid.RowDefinitions>
-                <ListView dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{local:ListDropTarget}" Grid.Column="0"  Grid.Row="0" Name="lv" IsManipulationEnabled="True" SelectionMode="Single">
+                <ListView dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{local:ListDropTarget}" Grid.Column="0"  Grid.Row="0" Name="lv" 
+                          IsManipulationEnabled="True" SelectionMode="Single">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn DisplayMemberBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, 
-                                         Converter={local:IndexConverter}}" Header="#" Width="25"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Converter={local:IndexConverter}}"
+                                            Header="#" Width="25"/>
                             <GridViewColumn Header="Name" Width="200">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBox Foreground="Fuchsia" Text="{Binding Name, Mode=TwoWay}"/>
+                                        <TextBox Foreground="Fuchsia" Validation.ErrorTemplate="{StaticResource validationTemplate}">
+                                            <TextBox.Text>
+                                            <Binding Path="Name" Mode="TwoWay" BindsDirectlyToSource="True" >
+                                                <Binding.ValidationRules>
+                                                    <local:NamesRule Source="{x:Reference lv}" ValidationStep="CommittedValue"/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -163,6 +207,8 @@
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <EventSetter Event="PreviewGotKeyboardFocus" Handler="LV_PreviewGotKeyboardFocus"/>
+                            <EventSetter Event="Loaded" Handler="ValidateListViewItems"/>
+                            <EventSetter Event="Unloaded" Handler="ValidateListViewItems"/>
                         </Style>
                     </ListView.ItemContainerStyle>
                 </ListView>
@@ -215,18 +261,17 @@
                                 </DataTemplate>
                             </xctk:EditorTemplateDefinition.EditingTemplate>
                         </xctk:EditorTemplateDefinition>
-
                     </xctk:PropertyGrid.EditorDefinitions>
                 </xctk:PropertyGrid>
-                <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Height="80" Margin="10" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                    <xctk:IconButton Width="100" Margin="10" Background="Aqua">
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Height="90" Margin="10" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                    <xctk:IconButton Width="100" Margin="10" Background="Aqua"  IconLocation="Left" Icon="{StaticResource imgBtn1}"  Click="IconButton_Click_1">
                         <TextBlock Text="Open Reference File" TextWrapping="Wrap" TextAlignment="Center"/>
                     </xctk:IconButton>
-                    <xctk:IconButton Width="100" Margin="10" Background="Beige">
+                    <xctk:IconButton Width="100" Margin="10" Background="Beige" IconLocation="Left" Icon="{StaticResource imgBtn2}" Click="IconButton_Click_2">
                         <TextBlock Text="Verify Signature(Reference File)" TextWrapping="Wrap" TextAlignment="Center"/>
                     </xctk:IconButton>
-                    <xctk:IconButton Width="100" Margin="10" Background="CadetBlue">
-                        <TextBlock Text="Save File &amp;Recreate Signature" TextWrapping="Wrap" TextAlignment="Center"/>
+                    <xctk:IconButton Width="100" Margin="10" Background="CadetBlue" IconLocation="Left" Icon="{StaticResource imgBtn3}" Click="IconButton_Click_3">
+                        <TextBlock Text="Save File &amp;Recreate Signature☂" TextWrapping="Wrap" TextAlignment="Center"/>
                     </xctk:IconButton>
                 </StackPanel>
             </Grid>
