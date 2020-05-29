@@ -49,28 +49,13 @@
             if (null != lv.SelectedItem)
             {
                 lv.Items.Remove(lv.SelectedItem);
-                var gvrps = FindVisualChild<GridViewRowPresenter>(lv);
+                var gvrps = lv.FindVisualChild<GridViewRowPresenter>();
                 foreach(var gvrp in gvrps)
                 {
                     var cell = VisualTreeHelper.GetChild(gvrp, 0) as TextBlock;
                     var be = cell.GetBindingExpression(TextBlock.TextProperty);
                     be.UpdateTarget();
                 }
-            }
-        }
-
-        private void ValidateListViewItems(object sender, RoutedEventArgs e)
-        {
-            var gvtbs = FindVisualChild<TextBox>(lv);
-            foreach (var gvtb in gvtbs)
-            {
-                var cell = gvtb as TextBox;
-                var be = cell.GetBindingExpression(TextBox.TextProperty);
-                var r = be.ParentBinding.ValidationRules[0].Validate(be, null);
-                if (!r.IsValid)
-                    Validation.MarkInvalid(be, new ValidationError(be.ParentBinding.ValidationRules[0], be, r.ErrorContent, null));
-                else
-                    Validation.ClearInvalid(be);
             }
         }
         ]]>
@@ -186,7 +171,7 @@
                                     <DataTemplate>
                                         <TextBox Foreground="Fuchsia" Validation.ErrorTemplate="{StaticResource validationTemplate}">
                                             <TextBox.Text>
-                                            <Binding Path="Name" Mode="TwoWay" BindsDirectlyToSource="True" >
+                                                <Binding Path="Name" Mode="TwoWay" BindsDirectlyToSource="True">
                                                 <Binding.ValidationRules>
                                                     <local:NamesRule Source="{x:Reference lv}" ValidationStep="CommittedValue"/>
                                                 </Binding.ValidationRules>
@@ -207,8 +192,8 @@
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <EventSetter Event="PreviewGotKeyboardFocus" Handler="LV_PreviewGotKeyboardFocus"/>
-                            <EventSetter Event="Loaded" Handler="ValidateListViewItems"/>
-                            <EventSetter Event="Unloaded" Handler="ValidateListViewItems"/>
+                            <EventSetter Event="Loaded" Handler="ValidateListViewItems" x:Name="Dior"/>
+                            <EventSetter Event="Unloaded" Handler="ValidateListViewItems" x:Name="Armani"/>
                         </Style>
                     </ListView.ItemContainerStyle>
                 </ListView>
@@ -216,7 +201,7 @@
                            ShowTitle="False" IsReadOnly="False" ShowSortOptions="False" ShowAdvancedOptions="True" ShowSummary="True" ShowSearchBox="False" IsVirtualizing="True" IsMiscCategoryLabelHidden="False" IsManipulationEnabled="True" MinHeight="300">
                     <xctk:PropertyGrid.PropertyDefinitions>
                         <xctk:PropertyDefinition DisplayOrder="1" DisplayName="Domain/Identity" TargetProperties="ProviderName" />
-                        <xctk:PropertyDefinition DisplayOrder="2" DisplayName="Hash set of certifications" TargetProperties="Hashes" />
+                        <xctk:PropertyDefinition DisplayOrder="2" DisplayName="Pin Set" TargetProperties="Hashes" />
                         <xctk:PropertyDefinition DisplayOrder="3" DisplayName="Flags" TargetProperties="Props" />
                         <xctk:PropertyDefinition DisplayOrder="4" DisplayName="Protocol" TargetProperties="Proto" />
                     </xctk:PropertyGrid.PropertyDefinitions>

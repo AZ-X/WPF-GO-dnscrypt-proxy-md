@@ -1,7 +1,10 @@
 ﻿using GongSolutions.Wpf.DragDrop;
 using System;
 using System.Collections;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Dynamic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
@@ -51,6 +54,7 @@ namespace WPF_dnscrypt_proxy_md
             {
                 Add(dropInfo.Data);
             }
+            ((MainWindow)App.Current.MainWindow).ValidateListViewItems();
         }
 
         public override object ProvideValue(IServiceProvider serviceProvider)

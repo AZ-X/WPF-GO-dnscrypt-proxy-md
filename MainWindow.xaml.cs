@@ -4,9 +4,11 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using static WPF_dnscrypt_proxy_md.MyGreatGoTest;
 
@@ -23,19 +25,23 @@ namespace WPF_dnscrypt_proxy_md
             InitializeComponent();
         }
 
-        static IEnumerable<ChildT> FindVisualChild<ChildT>(DependencyObject obj) where ChildT : DependencyObject
+        public void ValidateListViewItems(object sender = null, EventArgs e = null)
         {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            var lvis = lv.FindVisualChild<ListViewItem>();
+            var items = from dynamic item in lv.Items group item by item.Name into g let Invalid = g.Count() > 1 select new {
+                Invalid,
+                g = from lvi in lvis join item in g on lvi.Content equals item select lvi
+            };
+            foreach (var item in items)
             {
-                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
-                if (child is ChildT ct)
-                    yield return ct;
-                else
+                foreach(var lvi in item.g)
                 {
-                    foreach (var item in FindVisualChild<ChildT>(child))
-                    {
-                        yield return item;
-                    }
+                    var cell = lvi.FindVisualChild<TextBox>().First();
+                    var be = cell.GetBindingExpression(TextBox.TextProperty);
+                    if (item.Invalid)
+                        Validation.MarkInvalid(be, new ValidationError(be.ParentBinding.ValidationRules[0], be, NamesRule.Error, null));
+                    else
+                        Validation.ClearInvalid(be);
                 }
             }
         }
