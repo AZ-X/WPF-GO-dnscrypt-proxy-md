@@ -60,7 +60,7 @@ Download a release package built entirely via github.com managed environment (no
 
 # License
 
-See license file [LGPL V3 LICENSE] (https://github.com/AZ-X/WPF-GO-dnscrypt-proxy-md/blob/master/LICENSE "LICENSE").
+See license file [LGPL V3 LICENSE](https://github.com/AZ-X/WPF-GO-dnscrypt-proxy-md/blob/master/LICENSE).
 
 ------------------------------------------------------------------------------------------------------------------------------------
 # :atom:
