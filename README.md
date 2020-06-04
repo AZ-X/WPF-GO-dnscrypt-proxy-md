@@ -57,7 +57,7 @@ Download a release package built entirely via github.com managed environment (no
       
   6. **HOW TO** MOD the dnscrypt_proxy.toml
   
-      See WIKI--> [HOW TO: MOD the dnscrypt_proxy.toml associated with dnscrypt proxy v2 (go version) to steer you own shorten resolver list](https://github.com/AZ-X/WPF-GO-dnscrypt-proxy-md/wiki/HOW-TO:-MOD-the-dnscrypt-proxy.toml-associated-with-dnscrypt-proxy-v2-(go-version)-to-steer-you-own-shorten-resolver-list)
+      See WIKI--> [HOW TO: MOD the dnscrypt_proxy.toml associated with dnscrypt proxy v2 (go version) to steer your own shorten resolver list](https://github.com/AZ-X/WPF-GO-dnscrypt-proxy-md/wiki/HOW-TO:-MOD-the-dnscrypt-proxy.toml-associated-with-dnscrypt-proxy-v2-(go-version)-to-steer-your-own-shorten-resolver-list)
 
 
 # License
