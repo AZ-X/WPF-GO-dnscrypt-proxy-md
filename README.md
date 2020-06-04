@@ -1,13 +1,13 @@
 ## Intro
 A GUI Offline Tool for decrypting and manipulating *.md files used by dnscrypt proxy
 
-It's a less than three days project from very beginning.
+It was a less than three days project from very beginning.
 
 Everything looks good ~~except GUI~~ including fancy GUI.
 
 At least, it works great.
 
-Wiki pages will be created for guidance.
+Wiki pages will be created for guidance. 
 
 Overview
 
@@ -37,25 +37,27 @@ Download a release package built entirely via github.com managed environment (no
 # Usage
  1. **HOW TO** run this program inside a secure offline sandbox
  
-    See WIKI: [HOW TO: run WPF GO dnscrypt proxy md inside a secure offline sandbox](https://github.com/AZ-X/WPF-GO-dnscrypt-proxy-md/wiki/HOW-TO:-run-WPF-GO-dnscrypt-proxy-md-inside-a-secure-offline-sandbox)
+    See WIKI--> [HOW TO: run WPF GO dnscrypt proxy md inside a secure offline sandbox](https://github.com/AZ-X/WPF-GO-dnscrypt-proxy-md/wiki/HOW-TO:-run-WPF-GO-dnscrypt-proxy-md-inside-a-secure-offline-sandbox)
  
  2. **HOW TO** search data and narrow down the interest
  
-      See WIKI: [HOW TO: search data and narrow down the interest](https://github.com/AZ-X/WPF-GO-dnscrypt-proxy-md/wiki/HOW-TO:-search-data-and-narrow-down-the-interest)
+      See WIKI--> [HOW TO: search data and narrow down the interest](https://github.com/AZ-X/WPF-GO-dnscrypt-proxy-md/wiki/HOW-TO:-search-data-and-narrow-down-the-interest)
   
  3. **HOW TO** make selection
  
-      See WIKI: [HOW TO: make selection](https://github.com/AZ-X/WPF-GO-dnscrypt-proxy-md/wiki/HOW-TO:-make-selection)
+      See WIKI--> [HOW TO: make selection](https://github.com/AZ-X/WPF-GO-dnscrypt-proxy-md/wiki/HOW-TO:-make-selection)
   
  4. **HOW TO** change or recreate data
  
-      See WIKI: [HOW TO: change or recreate data](https://github.com/AZ-X/WPF-GO-dnscrypt-proxy-md/wiki/HOW-TO:-change-or-recreate-data)
+      See WIKI--> [HOW TO: change or recreate data](https://github.com/AZ-X/WPF-GO-dnscrypt-proxy-md/wiki/HOW-TO:-change-or-recreate-data)
    
  5. **HOW TO** verify an existing file base on the known signature
  
-      See WIKI:[HOW TO: verify an existing file base on the known signature](https://github.com/AZ-X/WPF-GO-dnscrypt-proxy-md/wiki/HOW-TO:-verify-an-existing-file-base-on-the-known-signature)
- 
-
+      See WIKI--> [HOW TO: verify an existing file base on the known signature](https://github.com/AZ-X/WPF-GO-dnscrypt-proxy-md/wiki/HOW-TO:-verify-an-existing-file-base-on-the-known-signature)
+      
+  6. **HOW TO** MOD the dnscrypt_proxy.toml
+  
+      See WIKI--> [HOW TO: MOD the dnscrypt_proxy.toml associated with dnscrypt proxy v2 (go version) to steer you own shorten resolver list](https://github.com/AZ-X/WPF-GO-dnscrypt-proxy-md/wiki/HOW-TO:-MOD-the-dnscrypt-proxy.toml-associated-with-dnscrypt-proxy-v2-(go-version)-to-steer-you-own-shorten-resolver-list)
 
 
 # License
