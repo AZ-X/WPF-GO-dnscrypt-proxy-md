@@ -17,7 +17,7 @@ Outputs
 
 # Goals
 
- - Afford an opportunity to go through obscure details of default resolvers and replies bundled into various dnscrypt proxy      
+ - Afford an opportunity to go through obscure details of default resolvers and relays bundled into various dnscrypt proxy      
    configurations which source is maintained by [https://dnscrypt.info](https://dnscrypt.info).
  - Produce a compatible md file as a tiny selection or recreation of different sources representative and on your own.
  - Verify the signature of present md file.
