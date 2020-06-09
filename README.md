@@ -1,3 +1,8 @@
+![Build Status][1]
+
+[1]: https://github.com/AZ-X/WPF-GO-dnscrypt-proxy-md/workflows/.NET%20Core%20WPF/badge.svg "Build Status badge"
+
+
 ## Intro
 A GUI Offline Tool for decrypting and manipulating *.md files used by dnscrypt proxy
 
