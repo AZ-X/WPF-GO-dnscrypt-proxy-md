@@ -1,13 +1,11 @@
 ﻿using GongSolutions.Wpf.DragDrop;
 using System;
 using System.Collections;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Dynamic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using Newtonsoft.Json.Linq;
 
 namespace WPF_dnscrypt_proxy_md
 {
@@ -40,7 +38,7 @@ namespace WPF_dnscrypt_proxy_md
             void Add (dynamic item) {
                 dynamic eo = new ExpandoObject();
                 eo.Name = item.Name;
-                eo.STAMP = item.STAMP;
+                eo.STAMP = (item.STAMP as JToken).DeepClone();
                 ic.Add(eo);
             };
             if (dropInfo.Data is IEnumerable data)
