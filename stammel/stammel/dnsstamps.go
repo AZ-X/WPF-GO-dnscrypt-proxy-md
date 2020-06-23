@@ -32,6 +32,7 @@ const (
 	StampProtoTypeDNSCrypt      = StampProtoType(0x01)
 	StampProtoTypeDoH           = StampProtoType(0x02)
 	StampProtoTypeTLS           = StampProtoType(0x03)
+	StampProtoTypeDoHEx         = StampProtoType(0x69)
 	StampProtoTypeDNSCryptRelay = StampProtoType(0x81)
 )
 
@@ -41,7 +42,7 @@ func (stampProtoType *StampProtoType) String() string {
 		return "Plain"
 	case StampProtoTypeDNSCrypt:
 		return "DNSCrypt"
-	case StampProtoTypeDoH:
+	case StampProtoTypeDoH, StampProtoTypeDoHEx:
 		return "DoH"
 	case StampProtoTypeDNSCryptRelay:
 		return "Anonymized DNSCrypt"
@@ -50,13 +51,40 @@ func (stampProtoType *StampProtoType) String() string {
 	}
 }
 
+type HEXJSON []uint8
+
+func (h *HEXJSON) MarshalJSON() ([]byte, error) {
+	var l = hex.EncodedLen(len(*h)) + 2
+	bin := make([]byte, l)
+	hex.Encode(bin[1:l-1], *h)
+	bin[0], bin[l-1] = '"', '"'
+    return []byte(string(bin)), nil
+}
+
+func (h *HEXJSON) UnmarshalJSON(b []byte) error {
+	array := make([]uint8, hex.DecodedLen(len(b) - 2))
+	_, err := hex.Decode(array, b[1:len(b)-1])
+	*h = array
+    return err
+}
+
+type SNIBlotUpType uint8
+
+const (
+	SNIBlotUpTypeDefault = iota
+	SNIBlotUpTypeOmit
+	SNIBlotUpTypeIPAddr
+	SNIBlotUpTypeMoniker
+)
 
 type ServerStamp struct {
 	ServerAddrStr string
-	ServerPk      []uint8
-	Hashes        [][]uint8
+	ServerPk      HEXJSON
+	Hashes        []HEXJSON
 	ProviderName  string
 	Path          string
+	SNIShadow     string
+	SNIBlotUp     SNIBlotUpType
 	Props         ServerInformalProperties
 	Proto         StampProtoType
 }
@@ -124,7 +152,9 @@ func NewServerStampFromString(stampStr string) (ServerStamp, error) {
 	if bin[0] == uint8(StampProtoTypeDNSCrypt) {
 		return newDNSCryptServerStamp(bin)
 	} else if bin[0] == uint8(StampProtoTypeDoH) {
-		return newDoHServerStamp(bin)
+		return newDoHServerStamp(bin, false)
+	} else if bin[0] == uint8(StampProtoTypeDoHEx) {
+		return newDoHServerStamp(bin, true)
 	} else if bin[0] == uint8(StampProtoTypeDNSCryptRelay) {
 		return newDNSCryptRelayStamp(bin)
 	}
@@ -195,8 +225,13 @@ func newDNSCryptServerStamp(bin []byte) (ServerStamp, error) {
 
 // id(u8)=0x02 props addrLen(1) serverAddr hashLen(1) hash providerNameLen(1) providerName pathLen(1) path
 
-func newDoHServerStamp(bin []byte) (ServerStamp, error) {
-	stamp := ServerStamp{Proto: StampProtoTypeDoH}
+func newDoHServerStamp(bin []byte, ex bool) (ServerStamp, error) {
+	var stamp ServerStamp
+	if ex {
+		stamp = ServerStamp{Proto: StampProtoTypeDoHEx}
+	} else {
+		stamp = ServerStamp{Proto: StampProtoTypeDoH}
+	}
 	if len(bin) < 22 {
 		return stamp, errors.New("Stamp is too short")
 	}
@@ -243,6 +278,19 @@ func newDoHServerStamp(bin []byte) (ServerStamp, error) {
 	pos++
 	stamp.Path = string(bin[pos : pos+length])
 	pos += length
+	if ex && pos < binLen {
+		stamp.SNIBlotUp = SNIBlotUpType(bin[pos])
+		pos++
+
+		length = int(bin[pos])
+		if length >= binLen-pos {
+			return stamp, errors.New("Invalid stamp 5")
+		}
+		pos++
+
+		stamp.SNIShadow = string(bin[pos : pos+length])
+		pos += length
+	}
 
 	if pos != binLen {
 		return stamp, errors.New("Invalid stamp (garbage after end)")
@@ -322,7 +370,9 @@ func (stamp *ServerStamp) String() string {
 	case StampProtoTypeDNSCrypt:
 		return stamp.dnsCryptString()
 	case StampProtoTypeDoH:
-		return stamp.dohString()
+		return stamp.dohString(false)
+	case StampProtoTypeDoHEx:
+		return stamp.dohString(true)
 	case StampProtoTypeDNSCryptRelay:
 		return stamp.dnsCryptRelayString()
 	}
@@ -354,9 +404,17 @@ func (stamp *ServerStamp) dnsCryptString() string {
 
 
 
-func (stamp *ServerStamp) dohString() string {
+func (stamp *ServerStamp) dohString(ex bool) string {
 	bin := make([]uint8, 9)
-	bin[0] = uint8(StampProtoTypeDoH)
+	if stamp.SNIBlotUp != SNIBlotUpTypeDefault {
+		ex = true
+	}
+	if ex {
+		bin[0] = uint8(StampProtoTypeDoHEx)
+	}else {
+		bin[0] = uint8(StampProtoTypeDoH)
+	}
+
 	binary.LittleEndian.PutUint64(bin[1:9], uint64(stamp.Props))
 
 	serverAddrStr := stamp.ServerAddrStr
@@ -384,6 +442,13 @@ func (stamp *ServerStamp) dohString() string {
 
 	bin = append(bin, uint8(len(stamp.Path)))
 	bin = append(bin, []uint8(stamp.Path)...)
+
+	if ex {
+		bin = append(bin, uint8(stamp.SNIBlotUp))
+
+		bin = append(bin, uint8(len(stamp.SNIShadow)))
+		bin = append(bin, []uint8(stamp.SNIShadow)...)
+	}
 
 	str := base64.RawURLEncoding.Strict().EncodeToString(bin)
 

@@ -54,21 +54,22 @@ namespace WPF_dnscrypt_proxy_md
 
         private void FlagsValue_Changed()
         {
-            Filter = FlagsValue.HasValue ? new ContentFilter(FlagsValue) : null;
+            Filter = FlagsValue.HasValue ? new ContentFilter(FlagsValue, true) : null;
         }
 
         private void ProtocolValue_Changed()
         {
-            Filter = ProtocolValue.HasValue ? new ContentFilter(ProtocolValue) : null;
+            Filter = ProtocolValue.HasValue ? new ContentFilter(ProtocolValue, false) : null;
         }
 
         class ContentFilter : IContentFilter
         {
             private readonly int? _val;
-
-            public ContentFilter(int? value)
+            bool Flags { get; set; }
+            public ContentFilter(int? value, bool flags)
             {
                 _val = value;
+                Flags = flags;
             }
 
             public int? Value
@@ -81,7 +82,7 @@ namespace WPF_dnscrypt_proxy_md
 
             public bool IsMatch(object value)
             {
-                return value==null?false:(Convert.ToInt32(value)&Value) == Value;
+                return value==null?false: Flags?(Convert.ToInt32(value)&Value) == Value: Convert.ToInt32(value) == Value;
             }
         }
 

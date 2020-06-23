@@ -20,6 +20,14 @@ Overview
 Outputs
 ![Show](https://github.com/AZ-X/MEDIA/blob/master/PNG/WPF-dnscrypt-proxy-md-RC0-outputs.PNG?raw=true)
 
+# Updates
+
+June23 : 
+1. unprohibited domain/identity field (real free for all fields now:alien:)
+2. leverage HeX view of data (smoothly paste)
+3. options for SNI spot (just an attitude, don't expect to gain privacy protection)
+![Show](https://github.com/AZ-X/MEDIA/blob/master/PNG/WPF-dnscrypt-proxy-md-June23.PNG?raw=true)
+
 # Goals
 
  - Afford an opportunity to go through obscure details of default resolvers and relays bundled into various dnscrypt proxy      

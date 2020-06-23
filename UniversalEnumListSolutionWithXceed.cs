@@ -30,7 +30,20 @@ namespace WPF_dnscrypt_proxy_md
         DNSCrypt,
         DoH,
         TLS,
+        DOHEx = 0x69,
         DNSCryptRelay = 0x81,
+    }
+
+    public enum SNIBlotUpType
+    {
+        [DisplayString("Default No Change")]
+        SNIBlotUpTypeDefault = 0,
+        [DisplayString("Omit SNI")] //SPECIFY&VERIFY SNIShadow
+        SNIBlotUpTypeOmit,
+        [DisplayString("SNI=Host IP Address")] //SPECIFY&VERIFY SNIShadow
+        SNIBlotUpTypeIPAddr,
+        [DisplayString("SNI=SNIShadow")]
+        SNIBlotUpTypeMoniker,
     }
 
     public class EnumConverter : MarkupExtension, IValueConverter
@@ -68,10 +81,13 @@ namespace WPF_dnscrypt_proxy_md
             Int64? returnValue = null;
             if (null == value)
                 return null;
-            if (parameter is Type)
+            if (parameter is Type t)
             {
                 var list = value as IList<KeyValuePair<long?, string>>;
-                returnValue = (from item in list select item.Key).DefaultIfEmpty(null).Aggregate((a, b) => a | b);
+                if (null != t.GetCustomAttribute<FlagsAttribute>())
+                    returnValue = (from item in list select item.Key).DefaultIfEmpty(null).Aggregate((a, b) => a | b);
+                else
+                    returnValue = list.Count > 1 ? (Int64?)null : (from item in list select item.Key).SingleOrDefault();
             }
             return returnValue;
         }

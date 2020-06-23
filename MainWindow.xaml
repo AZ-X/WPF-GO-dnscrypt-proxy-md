@@ -215,15 +215,15 @@
                         <xctk:EditorTemplateDefinition TargetProperties="ProviderName">
                             <xctk:EditorTemplateDefinition.EditingTemplate>
                                 <DataTemplate>
-                                    <TextBlock Background="ForestGreen" Foreground="Fuchsia" Text="{Binding Value}">
-                                    </TextBlock>
+                                    <TextBox Background="ForestGreen" Foreground="Fuchsia" Text="{Binding Value}">
+                                    </TextBox>
                                 </DataTemplate>
                             </xctk:EditorTemplateDefinition.EditingTemplate>
                         </xctk:EditorTemplateDefinition>
                         <xctk:EditorTemplateDefinition TargetProperties="Hashes">
                             <xctk:EditorTemplateDefinition.EditingTemplate>
                                 <DataTemplate>
-                                    <xctk:MultiLineTextEditor DropDownWidth="350" Text="{Binding Value}">
+                                    <xctk:MultiLineTextEditor DropDownWidth="350" Text="{Binding Value, Converter={local:PinSetConverter}}">
                                     </xctk:MultiLineTextEditor>
                                 </DataTemplate>
                             </xctk:EditorTemplateDefinition.EditingTemplate>
@@ -243,6 +243,15 @@
                                     <xctk:CheckComboBox DisplayMemberPath="Value" ValueMemberPath="Key"
                                                 ItemsSource="{Binding Source={local:EnumList {x:Type local:Protocol}, AsString=True, DBNull=False}}"
                                                 SelectedItemsOverride="{Binding Value, Converter={local:EnumConverter}, ConverterParameter={x:Type local:Protocol}, Mode=TwoWay}"/>
+                                </DataTemplate>
+                            </xctk:EditorTemplateDefinition.EditingTemplate>
+                        </xctk:EditorTemplateDefinition>
+                        <xctk:EditorTemplateDefinition TargetProperties="SNIBlotUp">
+                            <xctk:EditorTemplateDefinition.EditingTemplate>
+                                <DataTemplate>
+                                    <xctk:CheckComboBox DisplayMemberPath="Value" ValueMemberPath="Key"
+                                                ItemsSource="{Binding Source={local:EnumList {x:Type local:SNIBlotUpType}, AsString=True, DBNull=False}}"
+                                                SelectedItemsOverride="{Binding Value, Converter={local:EnumConverter}, ConverterParameter={x:Type local:SNIBlotUpType}, Mode=TwoWay}"/>
                                 </DataTemplate>
                             </xctk:EditorTemplateDefinition.EditingTemplate>
                         </xctk:EditorTemplateDefinition>
