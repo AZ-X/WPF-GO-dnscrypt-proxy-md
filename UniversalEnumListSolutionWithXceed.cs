@@ -26,10 +26,13 @@ namespace WPF_dnscrypt_proxy_md
 
     public enum Protocol
     {
-        Plain = 0,
+        [DisplayString("Plain(reserved)")]
+        Plain = 0, //reserved for future
         DNSCrypt,
         DoH,
-        TLS,
+        [DisplayString("TLS(reserved)")]
+        TLS, //reserved for future
+        DOTEx = 0x45,
         DOHEx = 0x69,
         DNSCryptRelay = 0x81,
     }

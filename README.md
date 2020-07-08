@@ -4,7 +4,9 @@
 
 
 ## Intro
-A GUI Offline Tool for decrypting and manipulating *.md files used by dnscrypt proxy
+A GUI Offline Tool for decrypting and manipulating *.md files used by [dnscrypt-proxy-r2](https://github.com/AZ-X/dnscrypt-proxy-r2) and dnscrypt proxy
+
+It's targeted for creating your own DoT, DoH and Decrypt resolver list at the beginning.
 
 It was a less than three days project from very beginning.
 
@@ -21,6 +23,11 @@ Outputs
 ![Show](https://github.com/AZ-X/MEDIA/blob/master/PNG/WPF-dnscrypt-proxy-md-RC0-outputs.PNG?raw=true)
 
 # Updates
+
+July8:
+1. formal DoT support
+2. added help info of protocol
+
 
 June23 : 
 1. unprohibited domain/identity field (real free for all fields now:alien:)
