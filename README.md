@@ -6,7 +6,7 @@
 ## Intro
 A GUI Offline Tool for decrypting and manipulating *.md files used by [dnscrypt-proxy-r2](https://github.com/AZ-X/dnscrypt-proxy-r2) and dnscrypt proxy
 
-It's targeted for creating your own DoT, DoH and Decrypt resolver list at the beginning.
+It's targeted for creating your own DoT, DoH and DNSCrypt resolver list at the beginning.
 
 It was a less than three days project from very beginning.
 
