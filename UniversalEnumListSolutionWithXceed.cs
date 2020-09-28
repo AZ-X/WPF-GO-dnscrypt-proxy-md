@@ -35,6 +35,8 @@ namespace WPF_dnscrypt_proxy_md
         DOTEx = 0x45,
         DOHEx = 0x69,
         DNSCryptRelay = 0x81,
+        Proxy = 0x96,
+        DNSCryptEx = 0xA9,
     }
 
     public enum SNIBlotUpType

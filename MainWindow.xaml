@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_dnscrypt_proxy_md"
         xmlns:dgx="clr-namespace:DataGridExtensions;assembly=DataGridExtensions"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     xmlns:dd="urn:gong-wpf-dragdrop"
     x:Class="WPF_dnscrypt_proxy_md.MainWindow"
@@ -200,17 +201,62 @@
                 <xctk:PropertyGrid Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Margin="0,10,0,0" VerticalAlignment="Top" SelectedObject="{Binding SelectedItem.STAMP, ElementName=lv}"
                            ShowTitle="False" IsReadOnly="False" ShowSortOptions="False" ShowAdvancedOptions="True" ShowSummary="True" ShowSearchBox="False" IsVirtualizing="True" IsMiscCategoryLabelHidden="False" IsManipulationEnabled="True" MinHeight="300">
                     <xctk:PropertyGrid.PropertyDefinitions>
-                        <xctk:PropertyDefinition DisplayOrder="1" DisplayName="Domain/Identity" TargetProperties="ProviderName" />
-                        <xctk:PropertyDefinition DisplayOrder="2" DisplayName="Pin Set" TargetProperties="Hashes" />
-                        <xctk:PropertyDefinition DisplayOrder="3" DisplayName="Flags" TargetProperties="Props" />
-                        <xctk:PropertyDefinition DisplayOrder="4" DisplayName="Protocol" TargetProperties="Proto" />
+                        <xctk:PropertyDefinition DisplayOrder="-1" DisplayName="Pin Set" TargetProperties="Hashes" Description="hash of TBS Certificate which is different from Fingerprint/Pin" />
+                        <xctk:PropertyDefinition DisplayOrder="-2" DisplayName="Domain/Identity/Uri" TargetProperties="ProviderName">
+                            <xctk:PropertyDefinition.Description>
+                                <sys:String xml:space="preserve">
+                                <![CDATA[There are three types of ProviderName:
+For DNSCrypt, it is a plaintext whatever called dnscrypt-cert. The normal form is 2.dnscrypt-cert.example.com
+For DoT or DoH, it is SNI with port number, however it can be overridden by SNIShadow used in dnscrypt-proxy-r2. The port number can be omitted
+For Proxy, it is Uri of HTTP, HTTPS, SOCKS5. e.g. https://user:pwd@example.org:8080 socks5://proxy.com]]>
+                                </sys:String>
+                            </xctk:PropertyDefinition.Description>
+                        </xctk:PropertyDefinition>
+                        <xctk:PropertyDefinition DisplayOrder="-3" DisplayName="Flags" TargetProperties="Props" Description="Always read the terms of service by yourself and alter this flag base on recognition" />
+                        <xctk:PropertyDefinition DisplayOrder="-4" DisplayName="Protocol" TargetProperties="Proto" Description="Proxy and Ex Stamps can only be used in dnscrypt-proxy-r2&#xA;Plains are forbidden in dnscrypt-proxy-r2" />
+                        <xctk:PropertyDefinition DisplayOrder="1" DisplayName="Path" TargetProperties="Path" Description="Path of DoH query"/>
+                        <xctk:PropertyDefinition DisplayOrder="2" DisplayName="Proxies" TargetProperties="Proxies" Description="'Proxies' uses semicolon as delimiter; 'Proxies' is an individual proxy list of Proxy Stamps for current server in order.&#xA;e.g. proxy-name1;proxy-name2"/>
+                        <xctk:PropertyDefinition DisplayOrder="3" DisplayName="Tags" TargetProperties="Tags">
+                            <xctk:PropertyDefinition.Description>
+                                <sys:String xml:space="preserve">
+                            <![CDATA['Tags' uses semicolon as delimiter
+e.g. canada;DNS-BOOST-GROUP;NO-PROXY                                    
+                                    
+Predefined Well-known Tag Name:                                
+HTTP-USE-GET
+DNS-BOOST-GROUP
+DNSCRPT-OBTAIN-FAST-KEY
+NO-PROXY]]>
+                            </sys:String>
+                            </xctk:PropertyDefinition.Description>
+                            </xctk:PropertyDefinition>
                     </xctk:PropertyGrid.PropertyDefinitions>
                     <xctk:PropertyGrid.PropertyContainerStyle>
                         <Style>
-                            <Setter Property="ItemsControl.Background" Value="ForestGreen"/>
+                            <Setter Property="ItemsControl.Background" Value="ForestGreen"/> 
                             <Setter Property="ItemsControl.Foreground" Value="Fuchsia"/>
                         </Style>
                     </xctk:PropertyGrid.PropertyContainerStyle>
+                    <xctk:PropertyGrid.Style>
+                        <Style>
+                            <Style.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <Trigger Property="Name" Value="PG_Item_Name">
+                                            <Setter Property="Foreground" Value="Goldenrod"/>
+                                            <Setter Property="FontWeight" Value="Light"/>
+                                            <Setter Property="TextAlignment" Value="Center"/>
+                                        </Trigger>
+                                        <Trigger Property="Name" Value="PG_Item_Desc">
+                                            <Setter Property="Foreground" Value="GhostWhite"/>
+                                            <Setter Property="FontWeight" Value="ExtraBlack"/>
+                                            <Setter Property="FontSize" Value="8pt" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Style.Resources>
+                        </Style>
+                    </xctk:PropertyGrid.Style>
                     <xctk:PropertyGrid.EditorDefinitions>
                         <xctk:EditorTemplateDefinition TargetProperties="ProviderName">
                             <xctk:EditorTemplateDefinition.EditingTemplate>

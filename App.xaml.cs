@@ -19,6 +19,11 @@ namespace WPF_dnscrypt_proxy_md
         {
             base.OnStartup(e);
         }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+        }
     }
 
     public static class MyGreatGoTest
@@ -51,6 +56,12 @@ namespace WPF_dnscrypt_proxy_md
                 return true;
             }
         }
+
+        [DllImport("kernel32.dll")]
+        public static extern void AllocConsole();
+        
+        [DllImport("kernel32.dll")]
+        public static extern void FreeConsole();
 
         [DllImport("stammel_go.dll", EntryPoint = "EXP_CreateSign", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
         public static extern bool GO_CreateSign(GoString file);

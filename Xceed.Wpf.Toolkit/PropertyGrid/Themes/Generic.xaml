@@ -1398,15 +1398,13 @@
                <StackPanel Grid.Row="4"
                           Margin="0,0,0,5"
                           Visibility="{Binding ShowSummary, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <TextBlock Padding="2 2 2 0"
+                                <TextBlock Padding="2 2 2 0" Name="PG_Item_Name"
                            FontWeight="Bold"
                            Text="{Binding SelectedPropertyItem.DisplayName, RelativeSource={RelativeSource TemplatedParent}}" >
                 </TextBlock>
-                <TextBlock Padding="5 2 2 0"
-                           TextWrapping="WrapWithOverflow"
-                           Text="{Binding SelectedPropertyItem.Description, RelativeSource={RelativeSource TemplatedParent}}" >
-                </TextBlock>
-              </StackPanel>
+                                <TextBlock Padding="5 2 2 0" Name="PG_Item_Desc"
+                           TextWrapping="WrapWithOverflow" Text="{Binding SelectedPropertyItem.Description, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </StackPanel>
             </Grid>
           </Border>
           <ControlTemplate.Triggers>

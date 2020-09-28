@@ -10,7 +10,7 @@
     <PublishReadyToRun>true</PublishReadyToRun>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x64</Platforms>
-    <AssemblyTitle>A gadget for producing refined md files of dnscrypt-proxy resolver variants and relays</AssemblyTitle>
+    <AssemblyTitle>A gadget for producing refined md files of dnscrypt-proxy resolver variants and relays, further more it is utilized to seam up all extension(Ex) and proxy stamps for dnscrypt-proxy-r2</AssemblyTitle>
     <Authors>AZ-X</Authors>
     <DefaultLanguage>en-CA</DefaultLanguage>
     <PackageLicenseExpression>https://github.com/AZ-X/WPF-GO-dnscrypt-proxy-md/LICENSE</PackageLicenseExpression>

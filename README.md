@@ -24,6 +24,14 @@ Outputs
 
 # Updates
 
+Sept28:
+1. added useful tips of fields
+2. new proxy stamp
+3. extended proxies and tags
+:key::point_down:
+![Show](https://github.com/AZ-X/MEDIA/blob/master/PNG/WPF-dnscrypt-proxy-md-Sept28.PNG?raw=true)
+
+
 July8:
 1. formal DoT support
 2. added help info of protocol
