@@ -67,9 +67,9 @@ jobs:
 
     # Install the .NET Core workload
     - name: Install .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v1.7.2
       with:
-        dotnet-version: 3.1.101
+        dotnet-version: 5.0.100
 
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
@@ -91,7 +91,7 @@ jobs:
  
     - name: Install 7Zip4Powershell
       shell: powershell
-      run: Install-Module -Name 7Zip4Powershell -Force -Scope CurrentUser -RequiredVersion 1.9.0
+      run: Install-Module -Name 7Zip4Powershell -Force -Scope CurrentUser -RequiredVersion 1.13
       
     - name: Import 7Zip4Powershell 
       shell: powershell
@@ -99,7 +99,7 @@ jobs:
       
     - name: Archive Release
       shell: powershell
-      run : Compress-7Zip -Path ".\bin\Release\netcoreapp3.1\win7-x64\publish\" -Filter "*.exe" -Format Zip -CompressionLevel Ultra -CompressionMethod Lzma -ArchiveFileName ".\WPF-dnscrypt-proxy-md-single-binary-release-can-run-without-dotnet-framework.zip"
+      run : Compress-7Zip -Path ".\bin\Release\net5.0-windows\win7-x64\publish\" -Filter "*.exe" -Format Zip -CompressionLevel Ultra -CompressionMethod Lzma -ArchiveFileName ".\WPF-dnscrypt-proxy-md-single-binary-release-can-run-without-dotnet-framework.zip"
       
     - uses: actions/upload-artifact@v2
       with:

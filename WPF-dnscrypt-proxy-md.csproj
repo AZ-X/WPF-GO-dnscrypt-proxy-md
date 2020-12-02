@@ -2,12 +2,14 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <RootNamespace>WPF_dnscrypt_proxy_md</RootNamespace>
     <PublishSingleFile>true</PublishSingleFile>
     <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
     <PublishTrimmed>true</PublishTrimmed>
-    <PublishReadyToRun>true</PublishReadyToRun>
+    <TrimMode>Link</TrimMode>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+    <PublishReadyToRun>false</PublishReadyToRun>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x64</Platforms>
     <AssemblyTitle>A gadget for producing refined md files of dnscrypt-proxy resolver variants and relays, further more it is utilized to seam up all extension(Ex) and proxy stamps for dnscrypt-proxy-r2</AssemblyTitle>
@@ -31,6 +33,12 @@
     <None Remove="Xceed.Wpf.Toolkit\**" />
     <Page Remove="Microsoft.DocAsCode.MarkdownLite\**" />
     <Page Remove="Xceed.Wpf.Toolkit\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TrimmerRootAssembly Include="System.Runtime" />
+    <TrimmerRootAssembly Include="System.Diagnostics.Debug" />
+    <TrimmerRootAssembly Include="System.Runtime.Extensions" />
   </ItemGroup>
   
   <ItemGroup>
