@@ -44,7 +44,7 @@
   <ItemGroup>
     <PackageReference Include="DataGridExtensions" Version="2.3.0" />
     <PackageReference Include="gong-wpf-dragdrop" Version="2.2.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
